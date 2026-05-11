@@ -39,6 +39,7 @@ namespace QuanLyQuanCafe
             // FORM
             this.Text = "Quản lý Kho";
             this.Size = new Size(600, 400);
+            this.MinimumSize = new Size(600, 400); // Thêm giới hạn thu nhỏ
             this.BackColor = Color.White;
 
             // dgvKho
@@ -46,27 +47,33 @@ namespace QuanLyQuanCafe
             dgvKho.Size = new Size(540, 200);
             dgvKho.BackgroundColor = Color.White;
             dgvKho.ForeColor = Color.Black;
+            dgvKho.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill; // Thêm tự động giãn cột
+            dgvKho.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right; // Neo 4 góc
 
             // txtMaNL
             txtMaNL.Location = new Point(20, 240);
             txtMaNL.Size = new Size(150, 25);
             txtMaNL.Text = "Mã nguyên liệu";
+            txtMaNL.Anchor = AnchorStyles.Bottom | AnchorStyles.Left; // Neo dưới trái
 
             // txtTenNL
             txtTenNL.Location = new Point(200, 240);
             txtTenNL.Size = new Size(150, 25);
             txtTenNL.Text = "Tên nguyên liệu";
+            txtTenNL.Anchor = AnchorStyles.Bottom | AnchorStyles.Left; // Neo dưới trái
 
             // txtSoLuong
             txtSoLuong.Location = new Point(380, 240);
             txtSoLuong.Size = new Size(100, 25);
             txtSoLuong.Text = "Số lượng";
+            txtSoLuong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left; // Neo dưới trái
 
             // btnThem
             btnThem.Text = "Thêm";
             btnThem.Location = new Point(20, 280);
             btnThem.BackColor = Color.Green;
             btnThem.ForeColor = Color.White;
+            btnThem.Anchor = AnchorStyles.Bottom | AnchorStyles.Left; // Neo dưới trái
             btnThem.Click += new System.EventHandler(this.btnThem_Click);
 
             // btnSua
@@ -74,6 +81,7 @@ namespace QuanLyQuanCafe
             btnSua.Location = new Point(120, 280);
             btnSua.BackColor = Color.Orange;
             btnSua.ForeColor = Color.White;
+            btnSua.Anchor = AnchorStyles.Bottom | AnchorStyles.Left; // Neo dưới trái
             btnSua.Click += new System.EventHandler(this.btnSua_Click);
 
             // btnXoa
@@ -81,6 +89,7 @@ namespace QuanLyQuanCafe
             btnXoa.Location = new Point(220, 280);
             btnXoa.BackColor = Color.Red;
             btnXoa.ForeColor = Color.White;
+            btnXoa.Anchor = AnchorStyles.Bottom | AnchorStyles.Left; // Neo dưới trái
             btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
 
             // ADD CONTROL

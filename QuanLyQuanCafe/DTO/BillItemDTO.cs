@@ -4,17 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe
+namespace QuanLyQuanCafe.DTO
 {
-    public class MonAn
+    public class BillItemDTO
     {
+        public int MaMon { get; set; }
         public string TenMon { get; set; }
+        public decimal Gia { get; set; }
         public int SoLuong { get; set; }
-        public decimal DonGia { get; set; }
-
-        public decimal ThanhTien()
-        {
-            return SoLuong * DonGia;
-        }
     }
 }

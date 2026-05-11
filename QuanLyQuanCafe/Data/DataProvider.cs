@@ -7,63 +7,73 @@ namespace QuanLyQuanCafe.Data
 {
     public class DataProvider
     {
-        public static string connectionString =
-        ConfigurationManager.ConnectionStrings["QLCF"].ConnectionString;
-        SqlConnection conn;
+        private string connectionString =
+            ConfigurationManager.ConnectionStrings["QLCF"].ConnectionString;
 
-        public void connect()
-        {
-            conn = new SqlConnection(connectionString);
-            if (conn.State == ConnectionState.Closed)
-                conn.Open();
-        }
-
-        public void close()
-        {
-            if (conn != null && conn.State == ConnectionState.Open)
-                conn.Close();
-        }
-
-        public DataTable ExecuteQuery(string sql, object[] param)
+        // SELECT
+        public DataTable ExecuteQuery(string sql, object[] param = null)
         {
             DataTable dt = new DataTable();
-            connect();
 
-            SqlCommand cmd = new SqlCommand(sql, conn);
-
-            if (param != null)
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                for (int i = 0; i < param.Length; i++)
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                if (param != null)
                 {
-                    cmd.Parameters.AddWithValue($"@p{i}", param[i]);
+                    for (int i = 0; i < param.Length; i++)
+                    {
+                        cmd.Parameters.AddWithValue($"@p{i}", param[i]);
+                    }
                 }
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                da.Fill(dt);
             }
 
-            SqlDataAdapter da = new SqlDataAdapter(cmd);
-            da.Fill(dt);
-
-            close();
             return dt;
         }
 
-        public int ExecuteNonQuery(string sql, object[] param)
+        // INSERT UPDATE DELETE
+        public int ExecuteNonQuery(string sql, object[] param = null)
         {
-            connect();
-
-            SqlCommand cmd = new SqlCommand(sql, conn);
-
-            if (param != null)
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                for (int i = 0; i < param.Length; i++)
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                if (param != null)
                 {
-                    cmd.Parameters.AddWithValue($"@p{i}", param[i]);
+                    for (int i = 0; i < param.Length; i++)
+                    {
+                        cmd.Parameters.AddWithValue($"@p{i}", param[i]);
+                    }
                 }
+
+                return cmd.ExecuteNonQuery();
             }
+        }
 
-            int result = cmd.ExecuteNonQuery();
+        // GET 1 VALUE
+        public object ExecuteScalar(string sql, object[] param = null)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
 
-            close();
-            return result;
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                if (param != null)
+                {
+                    for (int i = 0; i < param.Length; i++)
+                        cmd.Parameters.AddWithValue($"@p{i}", param[i]);
+                }
+
+                return cmd.ExecuteScalar();
+            }
         }
     }
 }

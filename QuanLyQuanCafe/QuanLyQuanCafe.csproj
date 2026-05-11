@@ -50,17 +50,17 @@
   <ItemGroup>
     <Compile Include="AppState.cs" />
     <Compile Include="BUS\BanBUS.cs" />
-    <Compile Include="BUS\GoiMonBUS.cs" />
-    <Compile Include="BUS\HoaDonBUS.cs" />
+    <Compile Include="BUS\DoanhThuBUS.cs" />
     <Compile Include="BUS\MonBUS.cs" />
     <Compile Include="BUS\NguyenLieuBUS.cs" />
     <Compile Include="BUS\NhanVienBUS.cs" />
+    <Compile Include="BUS\OrderBUS.cs" />
     <Compile Include="DAL\BanDAO.cs" />
-    <Compile Include="DAL\GoiMonDAO.cs" />
-    <Compile Include="DAL\HoaDonDAO.cs" />
+    <Compile Include="DAL\DoanhThuDAO.cs" />
     <Compile Include="DAL\MonDAO.cs" />
     <Compile Include="DAL\NguyenLieuDAO.cs" />
     <Compile Include="DAL\NhanVienDAO.cs" />
+    <Compile Include="DAL\OrderDAO.cs" />
     <Compile Include="Data\DataProvider.cs" />
     <Compile Include="DoanhThuForm.cs">
       <SubType>Form</SubType>
@@ -69,11 +69,13 @@
       <DependentUpon>DoanhThuForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DTO\BanDTO.cs" />
-    <Compile Include="DTO\GoiMonDTO.cs" />
-    <Compile Include="DTO\HoaDonDTO.cs" />
+    <Compile Include="DTO\BillItemDTO.cs" />
+    <Compile Include="DTO\ChiTietHoaDonDTO.cs" />
+    <Compile Include="DTO\DoanhThuDTO.cs" />
     <Compile Include="DTO\MonDTO.cs" />
     <Compile Include="DTO\NguyenLieuDTO.cs" />
     <Compile Include="DTO\NhanVienDTO.cs" />
+    <Compile Include="DTO\OrderDTO.cs" />
     <Compile Include="KhoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,7 +88,6 @@
     <Compile Include="Menu.Designer.cs">
       <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
-    <Compile Include="MonAn.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -136,6 +137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu.resx">
+      <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OrderForm.resx">
       <DependentUpon>OrderForm.cs</DependentUpon>

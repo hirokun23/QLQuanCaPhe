@@ -34,6 +34,7 @@ namespace QuanLyQuanCafe
         private void MainForm_Load(object sender, EventArgs e)
         {
             LoadForm(new HomeForm());
+            lblname.Text = "Xin chào, " + AppState.CurrentUser;
         }
 
         private void btnBanHang_Click(object sender, EventArgs e)

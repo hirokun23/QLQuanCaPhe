@@ -25,7 +25,8 @@ namespace QuanLyQuanCafe
 
             txtMaBan.Clear();
             txtTenBan.Clear();
-            cboTrangThai.SelectedIndex = 0;
+            if (cboTrangThai.Items.Count > 0)
+                cboTrangThai.SelectedIndex = 0;
         }
 
         private void btnThem_Click(object sender, EventArgs e)
@@ -49,7 +50,12 @@ namespace QuanLyQuanCafe
                 return;
             }
 
-            int ma = int.Parse(txtMaBan.Text);
+            int ma;
+            if (!int.TryParse(txtMaBan.Text, out ma))
+            {
+                MessageBox.Show("Mã bàn không hợp lệ");
+                return;
+            }
             bus.Update(ma, txtTenBan.Text, cboTrangThai.Text);
 
             MessageBox.Show("Sửa thành công");
@@ -77,12 +83,13 @@ namespace QuanLyQuanCafe
 
         private void dgvBan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
-            {
-                txtMaBan.Text = dgvBan.Rows[e.RowIndex].Cells["MaBan"].Value.ToString();
-                txtTenBan.Text = dgvBan.Rows[e.RowIndex].Cells["TenBan"].Value.ToString();
-                cboTrangThai.Text = dgvBan.Rows[e.RowIndex].Cells["TrangThai"].Value.ToString();
-            }
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow row = dgvBan.Rows[e.RowIndex];
+
+            txtMaBan.Text = row.Cells["MaBan"].Value?.ToString();
+            txtTenBan.Text = row.Cells["TenBan"].Value?.ToString();
+            cboTrangThai.Text = row.Cells["TrangThai"].Value?.ToString();
         }
     }
 }

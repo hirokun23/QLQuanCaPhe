@@ -10,10 +10,10 @@ namespace QuanLyQuanCafe
 {
     public partial class NhanVienForm : Form
     {
-        string connStr = @"Data Source=.\SQLEXPRESS;Initial Catalog=QLCF;Integrated Security=True";
 
         NhanVienBUS nvBus;
         NhanVienDTO nvInfo;
+        string action = "";
 
         public NhanVienForm()
         {
@@ -23,16 +23,16 @@ namespace QuanLyQuanCafe
         // LOAD FORM
         private void NhanVienForm_Load(object sender, EventArgs e)
         {
-            DataProvider.connectionString = connStr;
-
-            DataProvider provider = new DataProvider();
-            provider.connect();
+            
 
             nvBus = new NhanVienBUS();
             nvInfo = new NhanVienDTO();
 
             LoadGrid();
+            KhoaNut(false);
         }
+
+        int currentRowIndex = -1;
 
         // LOAD DATA GRID
         private void LoadGrid()
@@ -54,6 +54,34 @@ namespace QuanLyQuanCafe
 
             if (dgvNhanVien.Columns["MaNV"] != null)
                 dgvNhanVien.Columns["MaNV"].Visible = false;
+
+            if (currentRowIndex >= 0
+                && currentRowIndex < dgvNhanVien.Rows.Count)
+            {
+                dgvNhanVien.Rows[currentRowIndex].Selected = true;
+
+                dgvNhanVien.CurrentCell =
+                    dgvNhanVien.Rows[currentRowIndex].Cells[1];
+            }
+        }
+
+
+
+        void KhoaNut(bool editing)
+        {
+            btnThem.Enabled = !editing;
+            btnSua.Enabled = !editing;
+            btnXoa.Enabled = !editing;
+
+            btnSave.Enabled = editing;
+
+            txtTenNV.Enabled = editing;
+            dtNgaySinh.Enabled = editing;
+            txtSDT.Enabled = editing;
+            cbGioiTinh.Enabled = editing;
+            txtDiaChi.Enabled = editing;
+            txtChucVu.Enabled = editing;
+            txtLuong.Enabled = editing;
         }
 
         // LẤY DATA TỪ FORM
@@ -83,33 +111,48 @@ namespace QuanLyQuanCafe
             return true;
         }
 
-        // THÊM
+        bool isAdding = false;
+        bool isEditing = false;
+
+        // ================= THÊM =================
         private void btnThem_Click(object sender, EventArgs e)
         {
-            if (!getData()) return;
+            isAdding = true;
+            isEditing = false;
 
-            if (nvBus.insert())
-            {
-                MessageBox.Show("Thêm thành công!");
-                LoadGrid();
-                ClearForm();
-            }
+            ClearForm();
+            KhoaNut(true);
+
+            btnSave.Enabled = true;
+            btnHuy.Enabled = true;
+
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+            btnXoa.Enabled = false;
         }
 
-        // SỬA
+        // ================= SỬA =================
         private void btnSua_Click(object sender, EventArgs e)
         {
-            if (!getData()) return;
-
-            if (nvBus.update())
+            if (dgvNhanVien.CurrentRow == null)
             {
-                MessageBox.Show("Sửa thành công!");
-                LoadGrid();
-                ClearForm();
+                MessageBox.Show("Chọn nhân viên!");
+                return;
             }
+
+            isAdding = false;
+            isEditing = true;
+
+            btnSave.Enabled = true;
+            btnHuy.Enabled = true;
+
+            btnThem.Enabled = false;
+            btnSua.Enabled = false;
+            btnXoa.Enabled = false;
+            KhoaNut(true);
         }
 
-        // XÓA
+        // ================= XÓA =================
         private void btnXoa_Click(object sender, EventArgs e)
         {
             if (dgvNhanVien.CurrentRow == null)
@@ -118,24 +161,82 @@ namespace QuanLyQuanCafe
                 return;
             }
 
-            if (MessageBox.Show("Xóa?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            DialogResult rs = MessageBox.Show(
+                "Xóa nhân viên này?",
+                "Xác nhận",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (rs == DialogResult.Yes)
             {
                 if (!getData()) return;
 
                 if (nvBus.delete())
                 {
                     MessageBox.Show("Xóa thành công!");
+
                     LoadGrid();
                     ClearForm();
                 }
             }
         }
 
+        // ================= LƯU =================
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
+            if (!getData()) return;
+
+            // thêm
+            if (isAdding)
+            {
+                if (nvBus.insert())
+                {
+                    MessageBox.Show("Thêm thành công!");
+                }
+            }
+
+            // sửa
+            else if (isEditing)
+            {
+                if (nvBus.update())
+                {
+                    MessageBox.Show("Sửa thành công!");
+                }
+            }
+
+            LoadGrid();
+
+            ClearForm();
+            KhoaNut(false);
+
+            isAdding = false;
+            isEditing = false;
+
+            btnSave.Enabled = false;
+            btnHuy.Enabled = false;
+
+            btnThem.Enabled = true;
+            btnSua.Enabled = true;
+            btnXoa.Enabled = true;
         }
 
+        // ================= HỦY =================
+        private void btnHuy_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+            KhoaNut(false);
+
+            isAdding = false;
+            isEditing = false;
+
+            btnSave.Enabled = false;
+            btnHuy.Enabled = false;
+
+            btnThem.Enabled = true;
+            btnSua.Enabled = true;
+            btnXoa.Enabled = true;
+        }
         // CLICK GRID
         private void dgvNhanVien_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -150,6 +251,8 @@ namespace QuanLyQuanCafe
                 txtDiaChi.Text = row.Cells["DiaChi"].Value.ToString();
                 txtChucVu.Text = row.Cells["ChucVu"].Value.ToString();
                 txtLuong.Text = row.Cells["Luong"].Value.ToString();
+
+                currentRowIndex = e.RowIndex;
             }
         }
 
@@ -176,5 +279,7 @@ namespace QuanLyQuanCafe
             txtChucVu.Clear();
             txtLuong.Clear();
         }
+
+        
     }
 }

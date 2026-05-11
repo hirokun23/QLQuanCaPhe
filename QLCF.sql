@@ -9,10 +9,12 @@ USE QLCF
 GO
 
 -- ================= NHÂN VIÊN =================
+DROP TABLE NhanVien
 CREATE TABLE NhanVien
 (
     MaNV INT IDENTITY(1,1) PRIMARY KEY,
     TenNV NVARCHAR(100),
+    TenDangNhap NVARCHAR(50),
     NgaySinh DATE,
     SDT NVARCHAR(20),
     GioiTinh NVARCHAR(10),
@@ -22,29 +24,72 @@ CREATE TABLE NhanVien
 )
 
 INSERT INTO NhanVien
-(TenNV, NgaySinh, SDT, GioiTinh, DiaChi, ChucVu, Luong)
+(TenNV, TenDangNhap, NgaySinh, SDT,
+ GioiTinh, DiaChi, ChucVu, Luong)
 VALUES
-(N'Nguyễn Minh Quân', '2003-01-15', '0901234561', N'Nam', N'Bình Dương', N'Nhân viên', 5500000),
-(N'Trần Gia Huy', '2002-03-20', '0901234562', N'Nam', N'HCM', N'Pha chế', 6500000),
-(N'Lê Hoàng Nam', '2004-05-10', '0901234563', N'Nam', N'Đồng Nai', N'Nhân viên', 5200000),
-(N'Phạm Quốc Bảo', '2001-07-08', '0901234564', N'Nam', N'Bình Phước', N'Thu ngân', 6200000),
-(N'Võ Minh Khang', '2000-09-12', '0901234565', N'Nam', N'HCM', N'Quản lý', 11000000),
-(N'Nguyễn Khánh Vy', '2003-04-17', '0901234571', N'Nữ', N'Bình Dương', N'Nhân viên', 5400000),
-(N'Trần Ngọc Hân', '2002-06-11', '0901234572', N'Nữ', N'HCM', N'Pha chế', 6700000),
-(N'Lê Thảo Nhi', '2004-09-09', '0901234573', N'Nữ', N'Đồng Nai', N'Nhân viên', 5100000),
-(N'Phạm Kim Ngân', '2001-01-28', '0901234574', N'Nữ', N'Bình Phước', N'Thu ngân', 6100000),
-(N'Hoàng Minh Thư', '2000-02-16', '0901234580', N'Nữ', N'HCM', N'Quản lý', 11800000)
+(N'Nguyễn Minh Quân', 'quan', '2003-01-15',
+'0901234561', N'Nam', N'Bình Dương',
+N'Nhân viên', 5500000),
+
+(N'Trần Gia Huy', 'huy', '2002-03-20',
+'0901234562', N'Nam', N'HCM',
+N'Pha chế', 6500000),
+
+(N'Lê Hoàng Nam', 'nam', '2004-05-10',
+'0901234563', N'Nam', N'Đồng Nai',
+N'Nhân viên', 5200000),
+
+(N'Phạm Quốc Bảo', 'bao', '2001-07-08',
+'0901234564', N'Nam', N'Bình Phước',
+N'Thu ngân', 6200000),
+
+(N'Võ Minh Khang', 'khang', '2000-09-12',
+'0901234565', N'Nam', N'HCM',
+N'Quản lý', 11000000),
+
+(N'Nguyễn Khánh Vy', 'vy', '2003-04-17',
+'0901234571', N'Nữ', N'Bình Dương',
+N'Nhân viên', 5400000),
+
+(N'Trần Ngọc Hân', 'han', '2002-06-11',
+'0901234572', N'Nữ', N'HCM',
+N'Pha chế', 6700000),
+
+(N'Lê Thảo Nhi', 'nhi', '2004-09-09',
+'0901234573', N'Nữ', N'Đồng Nai',
+N'Nhân viên', 5100000),
+
+(N'Phạm Kim Ngân', 'ngan', '2001-01-28',
+'0901234574', N'Nữ', N'Bình Phước',
+N'Thu ngân', 6100000),
+
+(N'Hoàng Minh Thư', 'thu', '2000-02-16',
+'0901234580', N'Nữ', N'HCM',
+N'Quản lý', 11800000)
 
 -- ================= TÀI KHOẢN =================
+DROP TABLE TaiKhoan
 CREATE TABLE TaiKhoan
 (
     TenDangNhap NVARCHAR(50) PRIMARY KEY,
     MatKhau NVARCHAR(50)
 )
 
-INSERT INTO TaiKhoan VALUES
+INSERT INTO TaiKhoan
+(TenDangNhap, MatKhau)
+VALUES
 ('admin', '123'),
-('nhanvien', '123')
+('quan', '123'),
+('huy', '123'),
+('nam', '123'),
+('bao', '123'),
+('khang', '123'),
+('vy', '123'),
+('han', '123'),
+('nhi', '123'),
+('ngan', '123'),
+('thu', '123')
+
 
 -- ================= BÀN =================
 CREATE TABLE Ban
@@ -177,29 +222,39 @@ INSERT INTO NguyenLieu VALUES
 ('NL25', N'Ly nhựa', 300)
 
 -- ================= HÓA ĐƠN =================
+Drop TABLE HoaDon
+
 CREATE TABLE HoaDon
 (
     MaHD INT IDENTITY(1,1) PRIMARY KEY,
     MaBan INT,
-    NgayLap DATETIME,
+    MaNV INT,
+    NgayLap DATETIME DEFAULT GETDATE(),
     TongTien DECIMAL(18,0),
 
-    FOREIGN KEY (MaBan) REFERENCES Ban(MaBan)
+    FOREIGN KEY (MaBan) REFERENCES Ban(MaBan),
+    FOREIGN KEY (MaNV) REFERENCES NhanVien(MaNV)
 )
 
-INSERT INTO HoaDon VALUES
-(1, '2026-05-01 08:30:00', 65000),
-(2, '2026-05-01 09:15:00', 90000),
-(3, '2026-05-01 10:00:00', 120000),
-(4, '2026-05-01 11:20:00', 75000),
-(5, '2026-05-01 13:45:00', 150000),
-(6, '2026-05-02 08:10:00', 85000),
-(7, '2026-05-02 09:40:00', 110000),
-(8, '2026-05-02 10:30:00', 95000),
-(9, '2026-05-02 14:00:00', 180000),
-(10, '2026-05-02 16:20:00', 70000)
+ALTER TABLE HoaDon
+ADD GiamGia DECIMAL(18,0) DEFAULT 0,
+    PhuThu DECIMAL(18,0) DEFAULT 0
+
+INSERT INTO HoaDon (MaBan, MaNV, NgayLap, TongTien)
+VALUES
+(1, 1, '2026-05-01 08:30:00', 65000),
+(2, 2, '2026-05-01 09:15:00', 90000),
+(3, 3, '2026-05-01 10:00:00', 120000),
+(4, 4, '2026-05-01 11:20:00', 75000),
+(5, 5, '2026-05-01 13:45:00', 150000),
+(6, 1, '2026-05-02 08:10:00', 85000),
+(7, 2, '2026-05-02 09:40:00', 110000),
+(8, 3, '2026-05-02 10:30:00', 95000),
+(9, 4, '2026-05-02 14:00:00', 180000),
+(10, 5, '2026-05-02 16:20:00', 70000)
 
 -- ================= CHI TIẾT HÓA ĐƠN =================
+Drop TABLE ChiTietHoaDon
 CREATE TABLE ChiTietHoaDon
 (
     MaHD INT,
@@ -213,8 +268,8 @@ CREATE TABLE ChiTietHoaDon
     FOREIGN KEY (MaMon) REFERENCES Mon(MaMon)
 )
 
-INSERT INTO ChiTietHoaDon VALUES
-
+INSERT INTO ChiTietHoaDon (MaHD, MaMon, SoLuong, DonGia)
+VALUES
 (1, 1, 1, 18000),
 (1, 6, 1, 32000),
 (1, 17, 1, 15000),
@@ -252,6 +307,16 @@ INSERT INTO ChiTietHoaDon VALUES
 (10, 18, 2, 15000),
 (10, 11, 1, 35000)
 
+
+
+ALTER TABLE HoaDon
+ADD TrangThai NVARCHAR(20) DEFAULT N'ChuaThanhToan';
+
+UPDATE HoaDon
+SET TrangThai = N'DaThanhToan'
+WHERE TongTien > 0;
+
+
 -- ================= TEST =================
 SELECT * FROM NhanVien
 SELECT * FROM TaiKhoan
@@ -261,3 +326,6 @@ SELECT * FROM NguyenLieu
 SELECT * FROM HoaDon
 SELECT * FROM ChiTietHoaDon
 
+
+SELECT * FROM HoaDon ORDER BY MaHD DESC
+SELECT * FROM ChiTietHoaDon ORDER BY MaHD DESC

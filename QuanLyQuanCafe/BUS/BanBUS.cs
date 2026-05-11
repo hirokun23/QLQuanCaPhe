@@ -1,31 +1,39 @@
-﻿using QuanLyQuanCafe.DAO;
-using System.Data;
+﻿    using QuanLyQuanCafe.DAO;
+    using System.Data;
 
-namespace QuanLyQuanCafe.BUS
-{
-    public class BanBUS
+    namespace QuanLyQuanCafe.BUS
     {
-        BanDAO dao = new BanDAO();
-
-        public DataTable GetAll()
+        public class BanBUS
         {
-            return dao.GetAll();
-        }
+            BanDAO dao = new BanDAO();
 
-        public void Insert(string ten, string trangThai)
-        {
-            if (ten == "") return;
-            dao.Insert(ten, trangThai);
-        }
+            public DataTable GetAll()
+            {
+                return dao.GetAll();
+            }
 
-        public void Update(int ma, string ten, string trangThai)
-        {
-            dao.Update(ma, ten, trangThai);
-        }
+            // INSERT
+            public void Insert(string tenBan, string trangThai)
+            {
+                dao.Insert(tenBan, trangThai);
+            }
 
-        public void Delete(int ma)
-        {
-            dao.Delete(ma);
+            // UPDATE
+            public void Update(int maBan, string tenBan, string trangThai)
+            {
+                dao.Update(maBan, tenBan, trangThai);
+            }
+
+            // DELETE
+            public void Delete(int maBan)
+            {
+                dao.Delete(maBan);
+            }
+
+            // UPDATE TRẠNG THÁI
+            public void UpdateTrangThai(int maBan, string trangThai)
+            {
+                dao.UpdateTrangThai(maBan, trangThai);
+            }
         }
     }
-}

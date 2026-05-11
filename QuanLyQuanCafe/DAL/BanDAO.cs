@@ -7,28 +7,38 @@ namespace QuanLyQuanCafe.DAO
     {
         DataProvider dp = new DataProvider();
 
+        // LẤY TẤT CẢ BÀN
         public DataTable GetAll()
         {
-            string query = "SELECT MaBan, TenBan, TrangThai FROM Ban";
-            return dp.ExecuteQuery(query, null);
+            return dp.ExecuteQuery("SELECT * FROM Ban");
         }
 
-        public int Insert(string ten, string trangThai)
+        // THÊM BÀN
+        public void Insert(string tenBan, string trangThai)
         {
-            string query = "INSERT INTO Ban(TenBan, TrangThai) VALUES(@p0,@p1)";
-            return dp.ExecuteNonQuery(query, new object[] { ten, trangThai });
+            string sql = "INSERT INTO Ban(TenBan, TrangThai) VALUES(@p0, @p1)";
+            dp.ExecuteNonQuery(sql, new object[] { tenBan, trangThai });
         }
 
-        public int Update(int ma, string ten, string trangThai)
+        // CẬP NHẬT BÀN
+        public void Update(int maBan, string tenBan, string trangThai)
         {
-            string query = "UPDATE Ban SET TenBan=@p0, TrangThai=@p1 WHERE MaBan=@p2";
-            return dp.ExecuteNonQuery(query, new object[] { ten, trangThai, ma });
+            string sql = "UPDATE Ban SET TenBan=@p0, TrangThai=@p1 WHERE MaBan=@p2";
+            dp.ExecuteNonQuery(sql, new object[] { tenBan, trangThai, maBan });
         }
 
-        public int Delete(int ma)
+        // XÓA BÀN
+        public void Delete(int maBan)
         {
-            string query = "DELETE FROM Ban WHERE MaBan=@p0";
-            return dp.ExecuteNonQuery(query, new object[] { ma });
+            string sql = "DELETE FROM Ban WHERE MaBan=@p0";
+            dp.ExecuteNonQuery(sql, new object[] { maBan });
+        }
+
+        // CẬP NHẬT TRẠNG THÁI
+        public void UpdateTrangThai(int maBan, string trangThai)
+        {
+            string sql = "UPDATE Ban SET TrangThai=@p0 WHERE MaBan=@p1";
+            dp.ExecuteNonQuery(sql, new object[] { trangThai, maBan });
         }
     }
 }
