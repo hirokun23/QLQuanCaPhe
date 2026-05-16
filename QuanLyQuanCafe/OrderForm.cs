@@ -95,34 +95,95 @@ namespace QuanLyQuanCafe
 
             foreach (DataRow row in dt.Rows)
             {
-                Panel p = new Panel();
-                p.Width = 120;
-                p.Height = 150;
-                p.BorderStyle = BorderStyle.FixedSingle;
-                p.Margin = new Padding(10);
+                Guna2Panel p = new Guna2Panel();
 
+                p.Width = 130;
+                p.Height = 170;
+
+                p.Margin = new Padding(12);
+
+                p.BorderRadius = 18;
+
+                p.FillColor = Color.FromArgb(248, 249, 250);
+
+                p.ShadowDecoration.Enabled = true;
+                p.ShadowDecoration.Depth = 8;
+                p.ShadowDecoration.BorderRadius = 18;
+
+                p.Cursor = Cursors.Hand;
+
+                // ===== ẢNH =====
+                PictureBox pic = new PictureBox();
+
+                pic.Width = 115;
+                pic.Height = 105;
+
+                pic.Top = 10;
+                pic.Left = 15;
+
+                pic.SizeMode = PictureBoxSizeMode.Zoom;
+
+                pic.BackColor = Color.Transparent;
+
+                string path = row["HinhAnh"].ToString();
+
+                if (System.IO.File.Exists(path))
+                {
+                    using (var stream = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        pic.Image = Image.FromStream(stream);
+                    }
+                }
+
+                // ===== TÊN =====
                 Label lblName = new Label();
+
                 lblName.Text = row["TenMon"].ToString();
-                lblName.Top = 95;
-                lblName.Left = 10;
-                lblName.AutoSize = true;
 
+                lblName.Top = 118;
+                lblName.Left = 5;
+
+                lblName.Width = 120;
+                lblName.Height = 32;
+
+                lblName.TextAlign = ContentAlignment.MiddleCenter;
+
+                lblName.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+
+                lblName.ForeColor = Color.FromArgb(40, 40, 40);
+
+
+                // ===== GIÁ =====
                 Label lblPrice = new Label();
-                lblPrice.Text = row["Gia"].ToString();
-                lblPrice.Top = 115;
-                lblPrice.Left = 10;
-                lblPrice.AutoSize = true;
 
+                lblPrice.Text = row["Gia"].ToString() + " đ";
+
+                lblPrice.Top = 145;
+                lblPrice.Left = 5;
+
+                lblPrice.Width = 120;
+
+                lblPrice.TextAlign = ContentAlignment.MiddleCenter;
+
+                lblPrice.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+
+                lblPrice.ForeColor = Color.FromArgb(220, 53, 69);
+
+
+                // ===== ADD CONTROL =====
+                p.Controls.Add(pic);
                 p.Controls.Add(lblName);
                 p.Controls.Add(lblPrice);
 
                 p.Tag = row;
 
+                // ===== CLICK =====
                 p.Click += ChonMon;
+                pic.Click += ChonMon;
                 lblName.Click += ChonMon;
+                lblPrice.Click += ChonMon;
 
                 flowLayoutPanelMenu.Controls.Add(p);
-                
             }
         }
 
@@ -154,7 +215,7 @@ namespace QuanLyQuanCafe
             }
 
             Control c = sender as Control;
-            Panel p = (c is Panel) ? (Panel)c : (Panel)c.Parent;
+            Guna2Panel p = c.Parent as Guna2Panel ?? c as Guna2Panel;
 
             DataRow row = (DataRow)p.Tag;
 
@@ -345,31 +406,91 @@ namespace QuanLyQuanCafe
 
             foreach (DataRow row in dt.Rows)
             {
-                Panel p = new Panel();
-                p.Width = 120;
-                p.Height = 150;
-                p.BorderStyle = BorderStyle.FixedSingle;
-                p.Margin = new Padding(10);
+                Guna2Panel p = new Guna2Panel();
 
+                p.Width = 130;
+                p.Height = 170;
+
+                p.Margin = new Padding(12);
+
+                p.BorderRadius = 18;
+
+                p.FillColor = Color.FromArgb(248, 249, 250);
+
+                p.ShadowDecoration.Enabled = true;
+                p.ShadowDecoration.Depth = 8;
+                p.ShadowDecoration.BorderRadius = 18;
+
+                p.Cursor = Cursors.Hand;
+
+                PictureBox pic = new PictureBox();
+
+                pic.Width = 115;
+                pic.Height = 105;
+
+                pic.Top = 10;
+                pic.Left = 15;
+
+                pic.SizeMode = PictureBoxSizeMode.Zoom;
+
+                pic.BackColor = Color.Transparent;
+
+                string path = row["HinhAnh"].ToString();
+
+                if (System.IO.File.Exists(path))
+                {
+                    using (var stream = new System.IO.FileStream(path, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        pic.Image = Image.FromStream(stream);
+                    }
+                }
+
+                // ===== TÊN =====
                 Label lblName = new Label();
+
                 lblName.Text = row["TenMon"].ToString();
-                lblName.Top = 95;
-                lblName.Left = 10;
-                lblName.AutoSize = true;
 
+                lblName.Top = 118;
+                lblName.Left = 5;
+
+                lblName.Width = 120;
+                lblName.Height = 32;
+
+                lblName.TextAlign = ContentAlignment.MiddleCenter;
+
+                lblName.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+
+                lblName.ForeColor = Color.FromArgb(40, 40, 40);
+
+
+                // ===== GIÁ =====
                 Label lblPrice = new Label();
-                lblPrice.Text = row["Gia"].ToString();
-                lblPrice.Top = 115;
-                lblPrice.Left = 10;
-                lblPrice.AutoSize = true;
 
+                lblPrice.Text = row["Gia"].ToString() + " đ";
+
+                lblPrice.Top = 145;
+                lblPrice.Left = 5;
+
+                lblPrice.Width = 120;
+
+                lblPrice.TextAlign = ContentAlignment.MiddleCenter;
+
+                lblPrice.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+
+                lblPrice.ForeColor = Color.FromArgb(220, 53, 69);
+
+                // ===== ADD CONTROL =====
+                p.Controls.Add(pic);
                 p.Controls.Add(lblName);
                 p.Controls.Add(lblPrice);
 
                 p.Tag = row;
 
+                // ===== CLICK =====
                 p.Click += ChonMon;
+                pic.Click += ChonMon;
                 lblName.Click += ChonMon;
+                lblPrice.Click += ChonMon;
 
                 flowLayoutPanelMenu.Controls.Add(p);
             }

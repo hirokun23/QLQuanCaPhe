@@ -34,6 +34,7 @@ namespace QuanLyQuanCafe
             txtTenMon.Enabled = editing;
             txtGia.Enabled = editing;
             cboLoai.Enabled = editing;
+            txtHinhAnh.Enabled = editing;
 
             btnSave.Enabled = editing;
             btnHuy.Enabled = editing;
@@ -48,6 +49,7 @@ namespace QuanLyQuanCafe
             txtMaMon.Clear();
             txtTenMon.Clear();
             txtGia.Clear();
+            txtHinhAnh.Clear();
 
             cboLoai.SelectedIndex = 0;
         }
@@ -129,9 +131,10 @@ namespace QuanLyQuanCafe
             if (isAdding)
             {
                 bus.Insert(
-                    txtTenMon.Text,
-                    gia,
-                    cboLoai.Text
+                txtTenMon.Text,
+                gia,
+                cboLoai.Text,
+                txtHinhAnh.Text
                 );
 
                 MessageBox.Show("Thêm thành công");
@@ -143,10 +146,11 @@ namespace QuanLyQuanCafe
                 int ma = int.Parse(txtMaMon.Text);
 
                 bus.Update(
-                    ma,
-                    txtTenMon.Text,
-                    gia,
-                    cboLoai.Text
+                ma,
+                txtTenMon.Text,
+                gia,
+                cboLoai.Text,
+                txtHinhAnh.Text
                 );
 
                 MessageBox.Show("Sửa thành công");
@@ -179,6 +183,7 @@ namespace QuanLyQuanCafe
                 txtTenMon.Text = dgvMon.Rows[e.RowIndex].Cells["TenMon"].Value.ToString();
                 txtGia.Text = dgvMon.Rows[e.RowIndex].Cells["Gia"].Value.ToString();
                 cboLoai.Text = dgvMon.Rows[e.RowIndex].Cells["Loai"].Value.ToString();
+                txtHinhAnh.Text =dgvMon.Rows[e.RowIndex].Cells["HinhAnh"].Value.ToString();
             }
         }
 
@@ -204,8 +209,9 @@ namespace QuanLyQuanCafe
                         float.TryParse(ws.Cell(row, 2).Value.ToString(), out gia);
 
                         string loai = ws.Cell(row, 3).Value.ToString();
+                        string hinhAnh = ws.Cell(row, 4).Value.ToString();
 
-                        bus.Insert(tenMon, gia, loai);
+                        bus.Insert(tenMon, gia, loai, hinhAnh);
 
                         row++;
                     }

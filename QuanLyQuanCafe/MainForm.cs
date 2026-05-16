@@ -26,6 +26,7 @@ namespace QuanLyQuanCafe
 
         // ================= DANH SÁCH MENU =================
         private List<Guna2Button> menuButtons;
+        private Form currentForm;
 
         public MainForm(LoginDTO user)
         {
@@ -68,6 +69,16 @@ namespace QuanLyQuanCafe
         // ================= LOAD FORM =================
         void LoadForm(Form f)
         {
+            if (currentForm != null)
+            {
+                currentForm.Hide(); // Ẩn đi trước
+                panelMain.Controls.Remove(currentForm); // Xóa khỏi panel
+                currentForm.Close();
+                currentForm.Dispose(); // Ép giải phóng bộ nhớ ảnh/data
+                currentForm = null;
+            }
+
+            currentForm = f;
             panelMain.Controls.Clear();
 
             f.TopLevel = false;
@@ -75,7 +86,6 @@ namespace QuanLyQuanCafe
             f.Dock = DockStyle.Fill;
 
             panelMain.Controls.Add(f);
-
             f.Show();
         }
 
@@ -238,6 +248,11 @@ namespace QuanLyQuanCafe
             lblTitle.Text = "Quản lý công thức";
 
             BatDenNut(btnCongthuc);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

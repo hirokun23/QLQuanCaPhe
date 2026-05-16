@@ -8,10 +8,9 @@ namespace QuanLyQuanCafe
         private System.ComponentModel.IContainer components = null;
 
         private Guna.UI2.WinForms.Guna2DataGridView dgvMon;
-        private Guna.UI2.WinForms.Guna2TextBox txtMaMon, txtTenMon, txtGia;
-        private Guna.UI2.WinForms.Guna2ComboBox cboLoai;
+        private Guna.UI2.WinForms.Guna2TextBox txtMaMon, txtTenMon, txtGia, txtHinhAnh; private Guna.UI2.WinForms.Guna2ComboBox cboLoai;
         private Guna.UI2.WinForms.Guna2Button btnThem, btnSua, btnXoa;
-        private System.Windows.Forms.Label lblMa, lblTen, lblGia, lblLoai;
+        private System.Windows.Forms.Label lblMa, lblTen, lblGia, lblLoai, lblHinhAnh;
         private Guna.UI2.WinForms.Guna2Elipse elipseDgv;
 
         protected override void Dispose(bool disposing)
@@ -33,6 +32,7 @@ namespace QuanLyQuanCafe
             this.txtMaMon = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtTenMon = new Guna.UI2.WinForms.Guna2TextBox();
             this.txtGia = new Guna.UI2.WinForms.Guna2TextBox();
+            this.txtHinhAnh = new Guna.UI2.WinForms.Guna2TextBox();
             this.cboLoai = new Guna.UI2.WinForms.Guna2ComboBox();
             this.btnThem = new Guna.UI2.WinForms.Guna2Button();
             this.btnSua = new Guna.UI2.WinForms.Guna2Button();
@@ -40,6 +40,7 @@ namespace QuanLyQuanCafe
             this.lblMa = new System.Windows.Forms.Label();
             this.lblTen = new System.Windows.Forms.Label();
             this.lblGia = new System.Windows.Forms.Label();
+            this.lblHinhAnh = new System.Windows.Forms.Label();
             this.lblLoai = new System.Windows.Forms.Label();
             this.elipseDgv = new Guna.UI2.WinForms.Guna2Elipse(this.components);
             this.btnSave = new Guna.UI2.WinForms.Guna2Button();
@@ -149,6 +150,18 @@ namespace QuanLyQuanCafe
             this.txtGia.SelectedText = "";
             this.txtGia.Size = new System.Drawing.Size(120, 36);
             this.txtGia.TabIndex = 3;
+            // txtHinhAnh
+            this.txtHinhAnh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.txtHinhAnh.BorderRadius = 8;
+            this.txtHinhAnh.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtHinhAnh.DefaultText = "";
+            this.txtHinhAnh.Font = new System.Drawing.Font("Segoe UI", 9.75F);
+            this.txtHinhAnh.Location = new System.Drawing.Point(680, 425);
+            this.txtHinhAnh.Name = "txtHinhAnh";
+            this.txtHinhAnh.PlaceholderText = "link hoặc tên file ảnh";
+            this.txtHinhAnh.SelectedText = "";
+            this.txtHinhAnh.Size = new System.Drawing.Size(180, 36);
+            this.txtHinhAnh.TabIndex = 16;
             // 
             // cboLoai
             // 
@@ -264,6 +277,16 @@ namespace QuanLyQuanCafe
             this.lblLoai.Size = new System.Drawing.Size(71, 17);
             this.lblLoai.TabIndex = 11;
             this.lblLoai.Text = "Danh mục";
+            // lblHinhAnh
+            this.lblHinhAnh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblHinhAnh.AutoSize = true;
+            this.lblHinhAnh.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.lblHinhAnh.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.lblHinhAnh.Location = new System.Drawing.Point(680, 405);
+            this.lblHinhAnh.Name = "lblHinhAnh";
+            this.lblHinhAnh.Size = new System.Drawing.Size(67, 17);
+            this.lblHinhAnh.TabIndex = 17;
+            this.lblHinhAnh.Text = "Hình ảnh";
             // 
             // elipseDgv
             // 
@@ -352,6 +375,8 @@ namespace QuanLyQuanCafe
             this.Controls.Add(this.lblTen);
             this.Controls.Add(this.lblGia);
             this.Controls.Add(this.lblLoai);
+            this.Controls.Add(this.lblHinhAnh);
+            this.Controls.Add(this.txtHinhAnh);
             this.MinimumSize = new System.Drawing.Size(700, 450);
             this.Name = "MenuForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

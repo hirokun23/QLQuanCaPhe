@@ -12,15 +12,15 @@ namespace QuanLyQuanCafe.BUS
             return dao.GetAll();
         }
 
-        public void Insert(string ten, float gia, string loai)
+        public void Insert(string ten, float gia, string loai, string hinhAnh)
         {
             if (string.IsNullOrWhiteSpace(ten) || gia <= 0) return;
-            dao.Insert(ten, gia, loai);
+            dao.Insert(ten, gia, loai, hinhAnh);
         }
 
-        public void Update(int ma, string ten, float gia, string loai)
+        public void Update(int ma, string ten, float gia, string loai, string hinhAnh)
         {
-            dao.Update(ma, ten, gia, loai);
+            dao.Update(ma, ten, gia, loai, hinhAnh);
         }
 
         public void Delete(int ma)

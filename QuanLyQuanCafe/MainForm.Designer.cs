@@ -274,6 +274,7 @@
             this.MinimumSize = new System.Drawing.Size(1238, 642);
             this.Name = "MainForm";
             this.Text = "Quản Lý Quán Café";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picturelogo)).EndInit();
             this.panel1.ResumeLayout(false);

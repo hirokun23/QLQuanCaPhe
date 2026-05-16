@@ -155,39 +155,50 @@ INSERT INTO Ban VALUES
 (N'Bàn 50', N'Trống')
 
 -- ================= MÓN =================
+Drop table Mon
+
 CREATE TABLE Mon
 (
     MaMon INT IDENTITY(1,1) PRIMARY KEY,
     TenMon NVARCHAR(100),
     Gia DECIMAL(18,0),
-    Loai NVARCHAR(50)
+    Loai NVARCHAR(50),
+    HinhAnh NVARCHAR(255)
 )
 
-INSERT INTO Mon VALUES
-(N'Cà phê đen', 18000, N'Cafe'),
-(N'Cà phê sữa', 22000, N'Cafe'),
-(N'Bạc xỉu', 25000, N'Cafe'),
-(N'Latte', 38000, N'Cafe'),
-(N'Cappuccino', 40000, N'Cafe'),
+INSERT INTO Mon
+(TenMon, Gia, Loai, HinhAnh)
+VALUES
 
-(N'Trà đào cam sả', 32000, N'Trà'),
-(N'Trà chanh', 20000, N'Trà'),
-(N'Trà vải', 30000, N'Trà'),
-(N'Trà dâu', 32000, N'Trà'),
-(N'Trà sữa trân châu', 35000, N'Trà'),
+-- ================= CAFE =================
+(N'Cà phê đen', 18000, N'Cafe', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\capheden.jpg'),
+(N'Cà phê sữa', 22000, N'Cafe', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\caphesua.jpg'),
+(N'Bạc xỉu', 25000, N'Cafe', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\bacxiu.jpg'),
+(N'Latte', 38000, N'Cafe', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\latte.jpg'),
+(N'Cappuccino', 40000, N'Cafe', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\cappuccino.jpg'),
 
-(N'Nước ép cam', 35000, N'Nước ép'),
-(N'Nước ép dứa', 32000, N'Nước ép'),
-(N'Nước ép cà rốt', 30000, N'Nước ép'),
+-- ================= TRÀ =================
+(N'Trà đào cam sả', 32000, N'Trà', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\tradaocamsa.jpg'),
+(N'Trà chanh', 20000, N'Trà', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\trachanh.jpg'),
+(N'Trà vải', 30000, N'Trà', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\travai.jpg'),
+(N'Trà dâu', 32000, N'Trà', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\tradau.jpg'),
+(N'Trà sữa trân châu', 35000, N'Trà', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\trasuatranchau.jpg'),
 
-(N'Sinh tố dâu', 38000, N'Sinh tố'),
-(N'Sinh tố xoài', 38000, N'Sinh tố'),
-(N'Sinh tố bơ', 42000, N'Sinh tố'),
+-- ================= NƯỚC ÉP =================
+(N'Nước ép cam', 35000, N'Nước ép', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\nuocepcam.jpg'),
+(N'Nước ép dứa', 32000, N'Nước ép', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\nuocepdua.jpg'),
+(N'Nước ép cà rốt', 30000, N'Nước ép', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\nuocepcarot.jpg'),
 
-(N'Coca Cola', 15000, N'Nước ngọt'),
-(N'Pepsi', 15000, N'Nước ngọt'),
-(N'7Up', 15000, N'Nước ngọt'),
-(N'Sting', 15000, N'Nước ngọt')
+-- ================= SINH TỐ =================
+(N'Sinh tố dâu', 38000, N'Sinh tố', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\sinhtodau.jpg'),
+(N'Sinh tố xoài', 38000, N'Sinh tố', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\sinhtoxoai.jpg'),
+(N'Sinh tố bơ', 42000, N'Sinh tố', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\sinhtobo.jpg'),
+
+-- ================= NƯỚC NGỌT =================
+(N'Coca Cola', 15000, N'Nước ngọt', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\cocacola.jpg'),
+(N'Pepsi', 15000, N'Nước ngọt', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\pepsi.jpg'),
+(N'7Up', 15000, N'Nước ngọt', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\7up.jpg'),
+(N'Sting', 15000, N'Nước ngọt', 'C:\Users\Hoai Nam\Downloads\QuanLyQuanCafe\Images\sting.jpg')
 
 -- ================= NGUYÊN LIỆU =================
 CREATE TABLE NguyenLieu
@@ -437,3 +448,5 @@ SELECT * FROM CongThuc
 
 SELECT * FROM HoaDon ORDER BY MaHD DESC
 SELECT * FROM ChiTietHoaDon ORDER BY MaHD DESC
+
+SELECT TenMon, HinhAnh FROM Mon
