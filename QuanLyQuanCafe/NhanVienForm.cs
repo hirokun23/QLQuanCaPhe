@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 
 namespace QuanLyQuanCafe
 {
@@ -23,7 +24,7 @@ namespace QuanLyQuanCafe
         // LOAD FORM
         private void NhanVienForm_Load(object sender, EventArgs e)
         {
-            
+
 
             nvBus = new NhanVienBUS();
             nvInfo = new NhanVienDTO();
@@ -280,6 +281,92 @@ namespace QuanLyQuanCafe
             txtLuong.Clear();
         }
 
-        
+        private void btnImport_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Excel Files|*.xlsx";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    var wb = new XLWorkbook(ofd.FileName);
+                    var ws = wb.Worksheet(1);
+
+                    int row = 2;
+
+                    while (!ws.Cell(row, 1).IsEmpty())
+                    {
+                        nvInfo = new NhanVienDTO();
+
+                        nvInfo.TenNV = ws.Cell(row, 1).Value.ToString();
+                        nvInfo.NgaySinh = DateTime.Parse(ws.Cell(row, 2).Value.ToString());
+                        nvInfo.SDT = ws.Cell(row, 3).Value.ToString();
+                        nvInfo.GioiTinh = ws.Cell(row, 4).Value.ToString();
+                        nvInfo.DiaChi = ws.Cell(row, 5).Value.ToString();
+                        nvInfo.ChucVu = ws.Cell(row, 6).Value.ToString();
+
+                        float luong = 0;
+                        float.TryParse(ws.Cell(row, 7).Value.ToString(), out luong);
+                        nvInfo.Luong = luong;
+
+                        nvBus.info = nvInfo;
+                        nvBus.insert();
+
+                        row++;
+                    }
+
+                    MessageBox.Show("Import nhân viên thành công 😏");
+                    LoadGrid();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel Files|*.xlsx";
+            sfd.FileName = "NhanVien.xlsx";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                var wb = new XLWorkbook();
+                var ws = wb.Worksheets.Add("NhanVien");
+
+                // header
+                ws.Cell(1, 1).Value = "TenNV";
+                ws.Cell(1, 2).Value = "NgaySinh";
+                ws.Cell(1, 3).Value = "SDT";
+                ws.Cell(1, 4).Value = "GioiTinh";
+                ws.Cell(1, 5).Value = "DiaChi";
+                ws.Cell(1, 6).Value = "ChucVu";
+                ws.Cell(1, 7).Value = "Luong";
+
+                int row = 2;
+
+                foreach (DataGridViewRow r in dgvNhanVien.Rows)
+                {
+                    if (r.IsNewRow) continue;
+
+                    ws.Cell(row, 1).Value = r.Cells["TenNV"].Value?.ToString();
+                    ws.Cell(row, 2).Value = r.Cells["NgaySinh"].Value?.ToString();
+                    ws.Cell(row, 3).Value = r.Cells["SDT"].Value?.ToString();
+                    ws.Cell(row, 4).Value = r.Cells["GioiTinh"].Value?.ToString();
+                    ws.Cell(row, 5).Value = r.Cells["DiaChi"].Value?.ToString();
+                    ws.Cell(row, 6).Value = r.Cells["ChucVu"].Value?.ToString();
+                    ws.Cell(row, 7).Value = r.Cells["Luong"].Value?.ToString();
+
+                    row++;
+                }
+
+                wb.SaveAs(sfd.FileName);
+
+                MessageBox.Show("Xuất Excel nhân viên thành công 😏");
+            }
+        }
     }
 }

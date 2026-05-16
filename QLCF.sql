@@ -68,27 +68,30 @@ N'Thu ngân', 6100000),
 N'Quản lý', 11800000)
 
 -- ================= TÀI KHOẢN =================
-DROP TABLE TaiKhoan
+IF OBJECT_ID('TaiKhoan', 'U') IS NOT NULL
+    DROP TABLE TaiKhoan;
+
 CREATE TABLE TaiKhoan
 (
     TenDangNhap NVARCHAR(50) PRIMARY KEY,
-    MatKhau NVARCHAR(50)
-)
+    MatKhau NVARCHAR(50),
+    ChucVu NVARCHAR(20),
+    Email NVARCHAR(100)
+);
 
-INSERT INTO TaiKhoan
-(TenDangNhap, MatKhau)
+INSERT INTO TaiKhoan (TenDangNhap, MatKhau, ChucVu, Email)
 VALUES
-('admin', '123'),
-('quan', '123'),
-('huy', '123'),
-('nam', '123'),
-('bao', '123'),
-('khang', '123'),
-('vy', '123'),
-('han', '123'),
-('nhi', '123'),
-('ngan', '123'),
-('thu', '123')
+('quan', '123', 'User', 'quan@gmail.com'),
+('huy', '123', 'User', 'huy@gmail.com'),
+('nam', '123', 'User', 'namnguyenvn2006@gmail.com'),
+('bao', '123', 'User', 'bao@gmail.com'),
+('khang', '123', 'Admin', 'khang@gmail.com'),
+('vy', '123', 'User', 'vy@gmail.com'),
+('han', '123', 'User', 'han@gmail.com'),
+('nhi', '123', 'User', 'nhi@gmail.com'),
+('ngan', '123', 'User', 'ngan@gmail.com'),
+('thu', '123', 'Admin', 'thu@gmail.com');
+
 
 
 -- ================= BÀN =================
@@ -221,6 +224,122 @@ INSERT INTO NguyenLieu VALUES
 ('NL24', N'Ống hút', 500),
 ('NL25', N'Ly nhựa', 300)
 
+Drop table CongThuc
+CREATE TABLE CongThuc
+(
+    MaMon INT,
+    MaNL NVARCHAR(20),
+    SoLuong FLOAT,
+
+    PRIMARY KEY (MaMon, MaNL),
+
+    FOREIGN KEY (MaMon) REFERENCES Mon(MaMon),
+    FOREIGN KEY (MaNL) REFERENCES NguyenLieu(MaNL)
+)
+
+INSERT INTO CongThuc (MaMon, MaNL, SoLuong)
+VALUES
+
+-- ================= CÀ PHÊ =================
+-- Cà phê đen
+(1, 'NL01', 10),  -- cà phê hạt
+(1, 'NL21', 5),   -- đường
+(1, 'NL22', 50),  -- đá
+
+-- Cà phê sữa
+(2, 'NL01', 8),   -- cà phê hạt
+(2, 'NL02', 10),  -- sữa đặc
+(2, 'NL21', 5),   -- đường
+(2, 'NL22', 50),  -- đá
+
+-- Bạc xỉu
+(3, 'NL01', 6),   -- cà phê hạt
+(3, 'NL02', 15),  -- sữa đặc
+(3, 'NL23', 10),  -- kem sữa
+
+-- Latte
+(4, 'NL03', 20),  -- sữa tươi
+(4, 'NL21', 10),  -- đường
+
+-- Cappuccino
+(5, 'NL03', 15),  -- sữa tươi
+(5, 'NL23', 15),  -- kem sữa
+
+
+-- ================= TRÀ =================
+-- Trà đào cam sả
+(6, 'NL04', 1),   -- trà túi lọc
+(6, 'NL05', 15),  -- đào ngâm
+(6, 'NL21', 10),  -- đường
+(6, 'NL22', 50),  -- đá
+
+-- Trà chanh
+(7, 'NL04', 1),   -- trà túi lọc
+(7, 'NL08', 20),  -- chanh
+(7, 'NL21', 10),  -- đường
+
+-- Trà vải
+(8, 'NL04', 1),   -- trà túi lọc
+(8, 'NL09', 15),  -- vải
+(8, 'NL21', 10),  -- đường
+
+-- Trà dâu
+(9, 'NL04', 1),   -- trà túi lọc
+(9, 'NL10', 15),  -- dâu
+(9, 'NL21', 10),  -- đường
+
+-- Trà sữa trân châu
+(10, 'NL04', 1),  -- trà túi lọc
+(10, 'NL11', 20), -- trân châu
+(10, 'NL03', 10), -- sữa tươi
+
+
+-- ================= NƯỚC ÉP =================
+-- Nước ép cam
+(11, 'NL06', 2),  -- cam
+(11, 'NL21', 10), -- đường
+
+-- Nước ép dứa
+(12, 'NL12', 2),  -- dứa
+(12, 'NL21', 10),
+
+-- Nước ép cà rốt
+(13, 'NL13', 2),  -- cà rốt
+(13, 'NL21', 10),
+
+
+-- ================= SINH TỐ =================
+-- Sinh tố dâu
+(14, 'NL10', 2),  -- dâu
+(14, 'NL23', 20), -- kem sữa
+
+-- Sinh tố xoài
+(15, 'NL14', 2),  -- xoài
+(15, 'NL23', 20), -- kem sữa
+
+-- Sinh tố bơ
+(16, 'NL15', 2),  -- bơ
+(16, 'NL23', 20), -- kem sữa
+
+
+-- ================= NƯỚC NGỌT =================
+-- Coca Cola
+(17, 'NL17', 1),  -- coca lon
+(17, 'NL22', 50), -- đá
+
+-- Pepsi
+(18, 'NL18', 1),  -- pepsi lon
+(18, 'NL22', 50), -- đá
+
+-- 7Up
+(19, 'NL19', 1),  -- 7Up lon
+(19, 'NL22', 50), -- đá
+
+-- Sting
+(20, 'NL20', 1),  -- sting lon
+(20, 'NL22', 50)  -- đá
+
+
 -- ================= HÓA ĐƠN =================
 Drop TABLE HoaDon
 
@@ -257,57 +376,46 @@ VALUES
 Drop TABLE ChiTietHoaDon
 CREATE TABLE ChiTietHoaDon
 (
+    MaCT INT IDENTITY(1,1) PRIMARY KEY,
     MaHD INT,
     MaMon INT,
     SoLuong INT,
     DonGia DECIMAL(18,0),
+    ThanhTien AS (SoLuong * DonGia ),
 
-    PRIMARY KEY (MaHD, MaMon),
+    GhiChu NVARCHAR(255),
+
 
     FOREIGN KEY (MaHD) REFERENCES HoaDon(MaHD),
     FOREIGN KEY (MaMon) REFERENCES Mon(MaMon)
 )
 
-INSERT INTO ChiTietHoaDon (MaHD, MaMon, SoLuong, DonGia)
+INSERT INTO ChiTietHoaDon 
+(MaHD, MaMon, SoLuong, DonGia, GhiChu)
 VALUES
-(1, 1, 1, 18000),
-(1, 6, 1, 32000),
-(1, 17, 1, 15000),
 
-(2, 2, 2, 22000),
-(2, 7, 1, 20000),
-(2, 18, 1, 15000),
+-- ================= HÓA ĐƠN 1 =================
+(1, 1, 1, 18000, N'ít đá'),
+(1, 6, 1, 32000, N'bình thường'),
+(1, 17, 1, 15000, N'lon'),
 
-(3, 3, 2, 25000),
-(3, 10, 2, 35000),
+-- ================= HÓA ĐƠN 2 =================
+(2, 2, 2, 22000, N'ít đường'),
+(2, 7, 1, 20000, N'chanh nhiều'),
+(2, 18, 1, 15000, N'lạnh'),
 
-(4, 1, 1, 18000),
-(4, 11, 1, 35000),
-(4, 19, 1, 15000),
+-- ================= HÓA ĐƠN 3 =================
+(3, 3, 2, 25000, N'đậm'),
+(3, 10, 2, 35000, N'thêm trân châu'),
 
-(5, 4, 2, 38000),
-(5, 16, 2, 38000),
+-- ================= HÓA ĐƠN 4 =================
+(4, 1, 1, 18000, N'không đường'),
+(4, 11, 1, 35000, N'ít đá'),
+(4, 19, 1, 15000, N'lon'),
 
-(6, 5, 1, 40000),
-(6, 6, 1, 32000),
-(6, 20, 1, 15000),
-
-(7, 8, 2, 35000),
-(7, 12, 1, 32000),
-
-(8, 9, 1, 30000),
-(8, 13, 1, 30000),
-(8, 17, 1, 15000),
-
-(9, 4, 2, 38000),
-(9, 5, 1, 40000),
-(9, 15, 2, 15000),
-
-(10, 2, 1, 22000),
-(10, 18, 2, 15000),
-(10, 11, 1, 35000)
-
-
+-- ================= HÓA ĐƠN 5 =================
+(5, 4, 2, 38000, N'size lớn'),
+(5, 16, 2, 38000, N'bơ thêm kem');
 
 ALTER TABLE HoaDon
 ADD TrangThai NVARCHAR(20) DEFAULT N'ChuaThanhToan';
@@ -325,7 +433,7 @@ SELECT * FROM Mon
 SELECT * FROM NguyenLieu
 SELECT * FROM HoaDon
 SELECT * FROM ChiTietHoaDon
-
+SELECT * FROM CongThuc
 
 SELECT * FROM HoaDon ORDER BY MaHD DESC
 SELECT * FROM ChiTietHoaDon ORDER BY MaHD DESC

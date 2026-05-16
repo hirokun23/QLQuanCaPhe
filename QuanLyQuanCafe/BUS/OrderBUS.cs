@@ -45,11 +45,18 @@ namespace QuanLyQuanCafe.BUS
         {
             DataTable bill = dao.GetBill(maBan);
 
-            decimal tongTien = TinhTien(maBan, dto.GiamGia, dto.PhuThu);
+            int maHD = Convert.ToInt32(dao.GetOrCreateHoaDon(maBan));
 
-            int maHD = Convert.ToInt32(
-                dao.GetOrCreateHoaDon(maBan)
-            );
+            foreach (DataRow row in bill.Rows)
+            {
+                int maMon = Convert.ToInt32(row["MaMon"]);
+                int soLuong = Convert.ToInt32(row["SoLuong"]);
+
+                // 🔥 TRỪ NGUYÊN LIỆU THEO BILL
+                dao.TruNguyenLieu(maMon, soLuong);
+            }
+
+            decimal tongTien = TinhTien(maBan, dto.GiamGia, dto.PhuThu);
 
             dao.ThanhToan(maHD, tongTien, dto.GiamGia, dto.PhuThu);
 
@@ -70,5 +77,6 @@ namespace QuanLyQuanCafe.BUS
         {
             dao.GiamSoLuong(maBan, maMon);
         }
+
     }
 }

@@ -1,82 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using QuanLyQuanCafe.BUS;
+using QuanLyQuanCafe.DTO;
+using System;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace QuanLyQuanCafe
 {
     public partial class LoginForm : Form
     {
+        LoginBUS bus = new LoginBUS();
+        private LoginDTO currentUser;
+
         public LoginForm()
         {
             InitializeComponent();
         }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string connStr =
-                @"Data Source=DESKTOP-DJ9DDFC\SQLEXPRESS;
-        Initial Catalog=QLCF;
-        Integrated Security=True";
+            LoginDTO user =
+                bus.Login(
+                    txtUser.Text,
+                    txtPass.Text
+                );
 
-            SqlConnection conn = new SqlConnection(connStr);
-
-            try
+            if (user != null)
             {
-                conn.Open();
+                MessageBox.Show(
+                    "Đăng nhập thành công!");
 
-                string query =
-                          @"SELECT *
-                          FROM TaiKhoan tk
-                          JOIN NhanVien nv
-                          ON tk.TenDangNhap = nv.TenDangNhap
-                          WHERE tk.TenDangNhap=@user
-                          AND tk.MatKhau=@pass";
+                this.Hide();
 
-                SqlCommand cmd = new SqlCommand(query, conn);
+                MainForm f = new MainForm(user);
 
-                cmd.Parameters.AddWithValue("@user", txtUser.Text);
-                cmd.Parameters.AddWithValue("@pass", txtPass.Text);
+                f.FormClosed +=
+                    (s, args) => this.Close();
 
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                 if (reader.Read())
-        {
-            // lưu user login
-            AppState.CurrentUser =
-                reader["TenNV"].ToString();
-
-            MessageBox.Show(
-                "Đăng nhập thành công!");
-
-            this.Hide();
-
-            MainForm f = new MainForm();
-
-            f.FormClosed +=
-                (s, args) => this.Close();
-
-            f.Show();
-        }
-        else
-        {
-            MessageBox.Show(
-                "Sai tài khoản hoặc mật khẩu!");
-        }
-    }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi: " + ex.Message);
+                f.Show();
             }
-            finally
+            else
             {
-                conn.Close();
+                MessageBox.Show(
+                    "Sai tài khoản hoặc mật khẩu!");
             }
+        }
+
+        private void btnMk_Click(object sender, EventArgs e)
+        {
+            OtpForm f = new OtpForm();
+            f.ShowDialog();
         }
     }
 }

@@ -5,20 +5,23 @@ using System.Data;
 using System.Drawing;
 using System.Net.Sockets;
 using System.Windows.Forms;
+using Guna.UI2.WinForms;
 
 namespace QuanLyQuanCafe
 {
     public partial class OrderForm : Form
     {
+        private LoginDTO currentUser;
         MonBUS monBUS = new MonBUS();
         OrderBUS orderBUS = new OrderBUS();
         BanBUS banBUS = new BanBUS();   
         int currentTable = 0;
         
 
-        public OrderForm()
+        public OrderForm(LoginDTO user)
         {
             InitializeComponent();
+            currentUser = user;
             dtpCreated.Value = DateTime.Now;
             this.Load += OrderForm_Load;
             txtDiscount.TextChanged += (s, e) => UpdateTotal();
@@ -30,8 +33,9 @@ namespace QuanLyQuanCafe
             LoadTable();
             LoadMenu();
             LoadCategory();
-            
-            cboStaff.Text = AppState.CurrentUser;
+
+            cboStaff.Items.Add(currentUser.TenNV);
+            cboStaff.SelectedIndex = 0;
         }
 
         // ================= LOAD BÀN =================
@@ -43,27 +47,39 @@ namespace QuanLyQuanCafe
 
             foreach (DataRow row in dt.Rows)
             {
-                Button btn = new Button();
-                btn.Width = 80;
-                btn.Height = 80;
-                btn.Margin = new Padding(5);
-
                 int maBan = (int)row["MaBan"];
                 string trangThai = row["TrangThai"].ToString();
 
-                btn.Tag = maBan;
+                Guna2Button btn = new Guna2Button();
 
+                btn.Width = 85;
+                btn.Height = 85;
+                btn.Margin = new Padding(6);
+
+                // ===== BO GÓC =====
+                btn.BorderRadius = 15;
+
+                // ===== FONT =====
+                btn.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                btn.TextAlign = HorizontalAlignment.Center;
+
+                // ===== DATA =====
+                btn.Tag = maBan;
+                btn.Text = $"Bàn {maBan}\n{trangThai}";
+
+                // ===== MÀU THEO TRẠNG THÁI =====
                 if (trangThai == "Có khách")
                 {
-                    btn.Text = $"Bàn {maBan}\nCó khách";
-                    btn.BackColor = Color.Orange;
+                    btn.FillColor = Color.FromArgb(60, 167, 50);
+                    btn.ForeColor = Color.White;
                 }
                 else
                 {
-                    btn.Text = $"Bàn {maBan}\nTrống";
-                    btn.BackColor = Color.LightBlue;
+                    btn.FillColor = Color.LightSkyBlue;
+                    btn.ForeColor = Color.Black;
                 }
 
+                // ===== CLICK =====
                 btn.Click += Btn_Click;
 
                 flowLayoutPanelTable.Controls.Add(btn);
@@ -113,9 +129,11 @@ namespace QuanLyQuanCafe
         // ================= CHỌN BÀN =================
         void Btn_Click(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
+            var btn = sender as Guna2Button;
+            if (btn == null || btn.Tag == null) return;
 
-            int maBan = (int)btn.Tag;
+            int maBan = Convert.ToInt32(btn.Tag);
+
             currentTable = maBan;
             txtTable.Text = maBan.ToString();
 
@@ -123,7 +141,6 @@ namespace QuanLyQuanCafe
             LoadTable();
 
             lblTitle.Text = $"Chi tiết hóa đơn - Bàn {maBan}";
-
             LoadBill();
         }
         int selectedMaMon = -1;

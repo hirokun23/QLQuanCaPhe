@@ -12,11 +12,21 @@ namespace QuanLyQuanCafe
         public BanForm()
         {
             InitializeComponent();
+            
         }
 
         private void BanForm_Load(object sender, EventArgs e)
         {
             LoadBan();
+            KhoaNut(false);
+        }
+        void ClearForm()
+        {
+            txtMaBan.Clear();
+            txtTenBan.Clear();
+
+            if (cboTrangThai.Items.Count > 0)
+                cboTrangThai.SelectedIndex = 0;
         }
 
         void LoadBan()
@@ -28,18 +38,28 @@ namespace QuanLyQuanCafe
             if (cboTrangThai.Items.Count > 0)
                 cboTrangThai.SelectedIndex = 0;
         }
+        bool isAdding = false;
+        bool isEditing = false;
+        void KhoaNut(bool editing)
+        {
+            txtTenBan.Enabled = editing;
+            cboTrangThai.Enabled = editing;
+
+            btnSave.Enabled = editing;
+            btnHuy.Enabled = editing;
+
+            btnThem.Enabled = !editing;
+            btnSua.Enabled = !editing;
+            btnXoa.Enabled = !editing;
+        }
 
         private void btnThem_Click(object sender, EventArgs e)
         {
-            if (txtTenBan.Text.Trim() == "")
-            {
-                MessageBox.Show("Nhập tên bàn đi fen 😏");
-                return;
-            }
+            isAdding = true;
+            isEditing = false;
 
-            bus.Insert(txtTenBan.Text, cboTrangThai.Text);
-            MessageBox.Show("Thêm thành công");
-            LoadBan();
+            ClearForm();
+            KhoaNut(true);
         }
 
         private void btnSua_Click(object sender, EventArgs e)
@@ -50,16 +70,10 @@ namespace QuanLyQuanCafe
                 return;
             }
 
-            int ma;
-            if (!int.TryParse(txtMaBan.Text, out ma))
-            {
-                MessageBox.Show("Mã bàn không hợp lệ");
-                return;
-            }
-            bus.Update(ma, txtTenBan.Text, cboTrangThai.Text);
+            isAdding = false;
+            isEditing = true;
 
-            MessageBox.Show("Sửa thành công");
-            LoadBan();
+            KhoaNut(true);
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
@@ -70,15 +84,71 @@ namespace QuanLyQuanCafe
                 return;
             }
 
-            if (MessageBox.Show("Xóa bàn này?", "Xác nhận",
-                MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Xóa bàn này?",
+                "Xác nhận",
+                MessageBoxButtons.YesNo)
+                == DialogResult.Yes)
             {
                 int ma = int.Parse(txtMaBan.Text);
+
                 bus.Delete(ma);
 
-                MessageBox.Show("Xóa thành công");
+                MessageBox.Show("Xóa thành công 😏");
+
                 LoadBan();
+                ClearForm();
             }
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (txtTenBan.Text.Trim() == "")
+            {
+                MessageBox.Show("Nhập tên bàn đi fen 😏");
+                return;
+            }
+
+            // THÊM
+            if (isAdding)
+            {
+                bus.Insert(
+                    txtTenBan.Text,
+                    cboTrangThai.Text
+                );
+
+                MessageBox.Show("Thêm thành công");
+            }
+
+            // SỬA
+            else if (isEditing)
+            {
+                int ma = int.Parse(txtMaBan.Text);
+
+                bus.Update(
+                    ma,
+                    txtTenBan.Text,
+                    cboTrangThai.Text
+                );
+
+                MessageBox.Show("Sửa thành công");
+            }
+
+            LoadBan();
+
+            ClearForm();
+
+            KhoaNut(false);
+
+            isAdding = false;
+            isEditing = false;
+        }
+        private void btnHuy_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+
+            KhoaNut(false);
+
+            isAdding = false;
+            isEditing = false;
         }
 
         private void dgvBan_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -91,5 +161,9 @@ namespace QuanLyQuanCafe
             txtTenBan.Text = row.Cells["TenBan"].Value?.ToString();
             cboTrangThai.Text = row.Cells["TrangThai"].Value?.ToString();
         }
+
+        
+
+        
     }
 }

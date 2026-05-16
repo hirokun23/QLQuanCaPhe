@@ -31,20 +31,20 @@ namespace QuanLyQuanCafe.DAO
         }
 
         // ================= THÊM MÓN =================
-        public void AddMon(int maBan, int maMon, decimal gia)
+        public void AddMon(int maBan, int maMon, decimal gia, string ghiChu = "")
         {
             int maHD = GetOrCreateHoaDon(maBan);
 
             string sql = @"
-                IF EXISTS (SELECT 1 FROM ChiTietHoaDon WHERE MaHD=@p0 AND MaMon=@p1)
-                    UPDATE ChiTietHoaDon
-                    SET SoLuong = SoLuong + 1
-                    WHERE MaHD=@p0 AND MaMon=@p1
-                ELSE
-                    INSERT INTO ChiTietHoaDon(MaHD, MaMon, SoLuong, DonGia)
-                    VALUES(@p0, @p1, 1, @p2)";
+            IF EXISTS (SELECT 1 FROM ChiTietHoaDon WHERE MaHD=@p0 AND MaMon=@p1)
+                UPDATE ChiTietHoaDon
+                SET SoLuong = SoLuong + 1
+                WHERE MaHD=@p0 AND MaMon=@p1
+            ELSE
+                INSERT INTO ChiTietHoaDon(MaHD, MaMon, SoLuong, DonGia, GhiChu)
+                VALUES(@p0, @p1, 1, @p2, @p3)";
 
-            dp.ExecuteNonQuery(sql, new object[] { maHD, maMon, gia });
+            dp.ExecuteNonQuery(sql, new object[] { maHD, maMon, gia, ghiChu });
         }
 
         // ================= LẤY BILL =================
@@ -55,7 +55,9 @@ namespace QuanLyQuanCafe.DAO
                     m.MaMon,
                     m.TenMon,
                     c.DonGia,
-                    c.SoLuong
+                    c.SoLuong,
+                    c.GhiChu,
+                    (c.SoLuong * c.DonGia) AS ThanhTien
                 FROM ChiTietHoaDon c
                 JOIN HoaDon h ON c.MaHD = h.MaHD
                 JOIN Mon m ON m.MaMon = c.MaMon
@@ -80,17 +82,21 @@ namespace QuanLyQuanCafe.DAO
         public void RemoveMon(int maBan, int maMon)
         {
             string sql = @"
-                UPDATE ChiTietHoaDon
-                SET SoLuong = SoLuong - 1
-                WHERE MaHD = (
-                    SELECT TOP 1 MaHD FROM HoaDon
-                    WHERE MaBan = @p0 AND TrangThai = N'ChuaThanhToan'
-                    ORDER BY MaHD DESC
-                )
-                AND MaMon = @p1;
+            UPDATE ChiTietHoaDon
+            SET SoLuong = SoLuong - 1
+            WHERE MaHD = (
+                SELECT TOP 1 MaHD FROM HoaDon
+                WHERE MaBan = @p0 AND TrangThai = N'ChuaThanhToan'
+                ORDER BY MaHD DESC
+            )
+            AND MaMon = @p1;
 
-                DELETE FROM ChiTietHoaDon
-                WHERE SoLuong <= 0";
+            DELETE FROM ChiTietHoaDon
+            WHERE SoLuong <= 0 AND MaHD = (
+                SELECT TOP 1 MaHD FROM HoaDon
+                WHERE MaBan = @p0 AND TrangThai = N'ChuaThanhToan'
+                ORDER BY MaHD DESC
+            )";
 
             dp.ExecuteNonQuery(sql, new object[] { maBan, maMon });
         }
@@ -112,13 +118,13 @@ namespace QuanLyQuanCafe.DAO
         public void TangSoLuong(int maBan, int maMon)
         {
             string sql = @"
-    UPDATE ChiTietHoaDon
-    SET SoLuong = SoLuong + 1
-    WHERE MaHD = (
-        SELECT TOP 1 MaHD FROM HoaDon
-        WHERE MaBan = @p0 AND TrangThai = N'ChuaThanhToan'
-        ORDER BY MaHD DESC
-    ) AND MaMon = @p1";
+            UPDATE ChiTietHoaDon
+            SET SoLuong = SoLuong + 1
+            WHERE MaHD = (
+                SELECT TOP 1 MaHD FROM HoaDon
+                WHERE MaBan = @p0 AND TrangThai = N'ChuaThanhToan'
+                ORDER BY MaHD DESC
+            ) AND MaMon = @p1";
 
             dp.ExecuteNonQuery(sql, new object[] { maBan, maMon });
         }
@@ -126,18 +132,31 @@ namespace QuanLyQuanCafe.DAO
         public void GiamSoLuong(int maBan, int maMon)
         {
             string sql = @"
-    UPDATE ChiTietHoaDon
-    SET SoLuong = SoLuong - 1
-    WHERE MaHD = (
-        SELECT TOP 1 MaHD FROM HoaDon
-        WHERE MaBan = @p0 AND TrangThai = N'ChuaThanhToan'
-        ORDER BY MaHD DESC
-    ) AND MaMon = @p1;
+            UPDATE ChiTietHoaDon
+            SET SoLuong = SoLuong - 1
+            WHERE MaHD = (
+                SELECT TOP 1 MaHD FROM HoaDon
+                WHERE MaBan = @p0 AND TrangThai = N'ChuaThanhToan'
+                ORDER BY MaHD DESC
+            ) AND MaMon = @p1;
 
-    DELETE FROM ChiTietHoaDon
-    WHERE SoLuong <= 0";
+            DELETE FROM ChiTietHoaDon
+            WHERE SoLuong <= 0 AND MaHD = @p0";
 
             dp.ExecuteNonQuery(sql, new object[] { maBan, maMon });
         }
+        public void TruNguyenLieu(int maMon, int soLuong)
+        {
+            string sql = @"
+            UPDATE NL
+            SET NL.SoLuong = NL.SoLuong - (CT.SoLuong * @p1)
+            FROM NguyenLieu NL
+            JOIN CongThuc CT ON NL.MaNL = CT.MaNL
+            WHERE CT.MaMon = @p0";
+
+            dp.ExecuteNonQuery(sql, new object[] { maMon, soLuong });
+        }
+
     }
+
 }
