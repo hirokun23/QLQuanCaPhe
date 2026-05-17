@@ -9,7 +9,8 @@ USE QLCF
 GO
 
 -- ================= NHÂN VIÊN =================
-DROP TABLE NhanVien
+IF OBJECT_ID('NhanVien', 'U') IS NOT NULL
+    DROP TABLE NhanVien;
 CREATE TABLE NhanVien
 (
     MaNV INT IDENTITY(1,1) PRIMARY KEY,
@@ -31,13 +32,13 @@ VALUES
 '0901234561', N'Nam', N'Bình Dương',
 N'Nhân viên', 5500000),
 
-(N'Trần Gia Huy', 'huy', '2002-03-20',
-'0901234562', N'Nam', N'HCM',
-N'Pha chế', 6500000),
+(N'Lê Phan Quang Huy', 'huy', '2006-01-01',
+'0786283728', N'Nam', N'HCM',
+N'Quản lý', 11000000),
 
-(N'Lê Hoàng Nam', 'nam', '2004-05-10',
-'0901234563', N'Nam', N'Đồng Nai',
-N'Nhân viên', 5200000),
+(N'Nguyễn Hoài Nam', 'nam', '2006-11-23',
+'0867992284', N'Nam', N'HCM',
+N'QUản lý', 11000000),
 
 (N'Phạm Quốc Bảo', 'bao', '2001-07-08',
 '0901234564', N'Nam', N'Bình Phước',
@@ -82,15 +83,15 @@ CREATE TABLE TaiKhoan
 INSERT INTO TaiKhoan (TenDangNhap, MatKhau, ChucVu, Email)
 VALUES
 ('quan', '123', 'User', 'quan@gmail.com'),
-('huy', '123', 'User', 'huy@gmail.com'),
-('nam', '123', 'User', 'namnguyenvn2006@gmail.com'),
+('huy', '123', 'Admin', 'huylevippro123456@gmail.com'),
+('nam', '123', 'Admin', 'namnguyenvn2006@gmail.com'),
 ('bao', '123', 'User', 'bao@gmail.com'),
-('khang', '123', 'Admin', 'khang@gmail.com'),
+('khang', '123', 'User', 'khang@gmail.com'),
 ('vy', '123', 'User', 'vy@gmail.com'),
 ('han', '123', 'User', 'han@gmail.com'),
 ('nhi', '123', 'User', 'nhi@gmail.com'),
 ('ngan', '123', 'User', 'ngan@gmail.com'),
-('thu', '123', 'Admin', 'thu@gmail.com');
+('thu', '123', 'User', 'thu@gmail.com');
 
 
 
